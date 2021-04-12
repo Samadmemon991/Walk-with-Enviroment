@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000"
-    tools:context="com.capstone.objdetection.CameraActivity"
-    />
+    android:background="#fff"
+    tools:context="com.capstone.objdetection.CameraActivity">
+
+
+<!--    <include-->
+<!--        android:layout_gravity="bottom"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="223dp"-->
+<!--        layout="@layout/data_card"-->
+<!--        />-->
+
+    <include
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="-20dp"
+        android:layout_width="match_parent"
+        android:layout_height="270dp"
+        layout="@layout/data_card"
+        />
+
+
+
+</FrameLayout>
+

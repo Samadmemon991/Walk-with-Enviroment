@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    card_view:cardCornerRadius="30dp"
+    card_view:cardElevation="30dp"
+    android:layout_width="match_parent"
+    android:layout_height="240dp"
+    android:layout_gravity="bottom"
+    android:background="@color/white">
+
+<!--    card_view:cardCornerRadius="10dp">-->
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Objects Detected:"
+        android:textColor="@color/blue2"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/ObjectsText"
+        android:layout_width="match_parent"
+        android:layout_height="118dp"
+        android:layout_below="@+id/t1"
+        android:layout_marginTop="60dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text=""
+        android:textColor="@color/blue"
+        android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/t1"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="170dp"
+        android:text="Environment:"
+        android:textColor="@color/blue2"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/Env"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/t1"
+        android:layout_marginLeft="165dp"
+        android:layout_marginTop="170dp"
+        android:paddingLeft="10dp"
+        android:text="dummy"
+        android:textColor="@color/blue"
+        android:textSize="25sp" />
+</android.support.v7.widget.CardView>
