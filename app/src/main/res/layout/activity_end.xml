@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ProgressBar
+        android:id="@+id/progBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:paddingHorizontal="0dp"
+        android:progressDrawable="@drawable/prog_draw"
+
+        />
+
+
+    <ImageView
+        android:id="@+id/im"
+        android:layout_width="202dp"
+        android:layout_height="175dp"
+        android:src="@drawable/blind2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90pt"
+        />
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/im"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif-black"
+        android:text="Walk With Enviroment"
+        android:textAlignment="center"
+        android:textColor="#3ED5E8"
+        android:textSize="50dp"
+        android:textStyle="bold"
+        />
+
+
+</RelativeLayout>

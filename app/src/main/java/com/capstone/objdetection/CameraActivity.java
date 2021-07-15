@@ -3,6 +3,7 @@ package com.capstone.objdetection;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
@@ -17,10 +18,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Trace;
+import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
+import android.util.Log;
 import android.util.Size;
+import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.capstone.objdetection.env.ImageUtils;
@@ -28,13 +34,21 @@ import com.capstone.objdetection.env.Logger;
 
 import java.nio.ByteBuffer;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public abstract class CameraActivity extends Activity
         implements OnImageAvailableListener {
+
+    String envS;
+    HashMap<String, String> map;
+    Intent toEnd;
+    EnvironmentDetector env;
+    TextView envTv;
     private static final Logger LOGGER = new Logger();
 
     private static final int PERMISSIONS_REQUEST = 1;
@@ -56,6 +70,7 @@ public abstract class CameraActivity extends Activity
     private Runnable imageConverter;
 
     private TextToSpeech textToSpeech;
+    TextToSpeech tts;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -71,6 +86,12 @@ public abstract class CameraActivity extends Activity
             requestPermission();
         }
 
+        envTv = (TextView) findViewById(R.id.Env);
+//        TextView objTv = (TextView) findViewById(R.id.ObjectsText);
+        Vibrator vib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        env = new EnvironmentDetector(vib);
+        toEnd = new Intent(this, end.class);
+        map = new HashMap<String, String>();
         this.textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -81,6 +102,40 @@ public abstract class CameraActivity extends Activity
                 }
             }
         });
+
+
+        tts = new TextToSpeech(CameraActivity.this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
+                    tts.setLanguage(Locale.US);
+                    Log.d("TTS_test", "Success: ");
+                }
+            }
+        });
+
+        map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
+        tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+            @Override
+            public void onStart(String s) {
+                Log.d("Main Activity TTS_test", "Start");
+            }
+
+            @Override
+            public void onDone(String s) {
+                tts.stop();
+                tts.shutdown();
+//                tts = null;
+                Log.d("TTS_test", "Done " + (tts == null));
+                startActivity(toEnd);
+                Log.d("TTS_test", "Done " + (tts == null));
+            }
+
+            @Override
+            public void onError(String s) {
+            }
+        });
+
 
     }
 
@@ -429,4 +484,23 @@ public abstract class CameraActivity extends Activity
     protected abstract int getLayoutId();
 
     protected abstract Size getDesiredPreviewFrameSize();
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        try {
+        if (textToSpeech.isSpeaking() && envTv.getText().equals("Pending")){
+            textToSpeech.shutdown();
+            textToSpeech.stop();
+            envS = env.envSet(envTv);
+            int res = tts.speak("You are in a " + envS, TextToSpeech.QUEUE_FLUSH, map);
+            Log.d("TTS_test", "result = TTS Envv " + res);
+
+        }
+        }catch (Exception e){
+            Log.d("tts", "onTouchEvent: ");
+
+        }
+//        textToSpeech = null;
+        return super.onTouchEvent(event);
+    }
 }

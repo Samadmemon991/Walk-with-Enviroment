@@ -10,9 +10,9 @@ import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.media.ImageReader.OnImageAvailableListener;
-import android.util.Log;
 import android.util.Size;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +27,13 @@ import java.util.List;
 
 
 public class DetectorActivity extends CameraActivity implements OnImageAvailableListener {
-    TextView ObjTextView;
+//    TextView objTv;
+//    EnvironmentDetector env;
+//    Vibrator vib;
+
+
+    TextView envTv;
+    TextView ObjTv;
     private static final Logger LOGGER = new Logger();
 
     private static final int TF_OD_API_INPUT_SIZE = 300;
@@ -166,14 +172,20 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                         final List<Classifier.Recognition> mappedRecognitions =
                                 new LinkedList<>();
 
-                        ObjTextView = findViewById(R.id.ObjectsText);
+                        ObjTv = (TextView) findViewById(R.id.ObjectsText);
+                        envTv = (TextView) findViewById(R.id.Env);
 
                         for (final Classifier.Recognition result : results) {
                             final RectF location = result.getLocation();
                             if (location != null && result.getConfidence() >= MINIMUM_CONFIDENCE_TF_OD_API) {
-                                LOGGER.i("Title: " + result.getTitle());
-                                UpdateInfoBox(result.getTitle());
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        env.objCheck(result.getTitle(), ObjTv, envTv);
 
+                                    }
+                                });
+                                LOGGER.i("Title: " + result.getTitle());
                                 canvas.drawRect(location, paint);
 
                                 cropToFrameTransform.mapRect(location);
@@ -192,18 +204,18 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     }
 
 
-    void UpdateInfoBox(String newObj) {
-
-        ObjTextView = ObjTextView.findViewById(R.id.ObjectsText);
-        String OldObjs = (String) ObjTextView.getText();
-
-
-        if (OldObjs.isEmpty())
-            ObjTextView.setText(newObj);
-        else if (!(OldObjs.contains(newObj))) {
-            ObjTextView.setText(OldObjs + ", " + newObj);
-        }
-    }
+//    void UpdateInfoBox(String newObj) {
+//
+//        ObjTextView = ObjTextView.findViewById(R.id.ObjectsText);
+//        String OldObjs = (String) ObjTextView.getText();
+//
+//
+//        if (OldObjs.isEmpty())
+//            ObjTextView.setText(newObj);
+//        else if (!(OldObjs.contains(newObj))) {
+//            ObjTextView.setText(OldObjs + ", " + newObj);
+//        }
+//    }
 
 
     @Override
