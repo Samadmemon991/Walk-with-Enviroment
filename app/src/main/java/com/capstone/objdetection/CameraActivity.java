@@ -252,6 +252,10 @@ public abstract class CameraActivity extends Activity
             textToSpeech.stop();
             textToSpeech.shutdown();
         }
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
 
         super.onPause();
     }
@@ -488,7 +492,7 @@ public abstract class CameraActivity extends Activity
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         try {
-        if (textToSpeech.isSpeaking() && envTv.getText().equals("Pending")){
+        if (textToSpeech != null && envTv.getText().equals("Pending")){
             textToSpeech.stop();
             textToSpeech.shutdown();
             envS = env.envSet(envTv);

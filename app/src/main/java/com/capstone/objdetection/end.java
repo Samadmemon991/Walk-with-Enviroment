@@ -20,6 +20,7 @@ public class end extends AppCompatActivity {
     HashMap<String, String> mapE = new HashMap<String, String>();
     CountDownTimer cdt;
     Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,15 +72,15 @@ public class end extends AppCompatActivity {
             @Override
             public void onTick(long l) {
 
-                int x = (int) l*2 / 100;
+                int x = (int) l * 2 / 100;
                 Log.d("End Class clock", "onTick: " + x);
                 pg.setProgress(x);
             }
 
             @Override
             public void onFinish() {
-                Log.d("End Class clock", "onFinish: ");
-                finish();
+                Log.d("End Class clock", "onFinish: kill app");
+                Process.killProcess(Process.myPid());
             }
         };
         Log.d("End Class clock", "start: ");
@@ -89,13 +90,22 @@ public class end extends AppCompatActivity {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        Log.d("end class", "onTouchEvent: ");
+        cdt.cancel();
+        Log.d("end class", "cdt cancel ");
         startActivity(intent);
+        finish();
+        Log.d("end class", "Activity finish");
         return super.onTouchEvent(event);
     }
 
     @Override
     protected void onDestroy() {
-        Process.killProcess(Process.myPid());
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        Log.d("End class", "onDestroy: activity dead ");
         super.onDestroy();
     }
 }
