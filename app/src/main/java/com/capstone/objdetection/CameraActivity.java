@@ -489,8 +489,8 @@ public abstract class CameraActivity extends Activity
     public boolean onTouchEvent(MotionEvent event) {
         try {
         if (textToSpeech.isSpeaking() && envTv.getText().equals("Pending")){
-            textToSpeech.shutdown();
             textToSpeech.stop();
+            textToSpeech.shutdown();
             envS = env.envSet(envTv);
             int res = tts.speak("You are in a " + envS, TextToSpeech.QUEUE_FLUSH, map);
             Log.d("TTS_test", "result = TTS Envv " + res);

@@ -306,7 +306,9 @@ public class EnvironmentDetector {
         ObjCounter(obj);
         if (envTable.get("Room") >= 5 || envTable.get("Garage") >= 5
                 || envTable.get("Kitchen") >= 5 || envTable.get("Office") >= 5) {
-            envTv.setText("Pending");
+            if (envTv.getText().equals("")) {
+                envTv.setText("Pending");
+            }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 vib.vibrate(VibrationEffect.createOneShot(400, VibrationEffect.DEFAULT_AMPLITUDE));
