@@ -70,7 +70,8 @@ public class TensorFlowObjectDetectionAPIModel implements Classifier {
     br = new BufferedReader(new InputStreamReader(labelsInput));
     String line;
     while ((line = br.readLine()) != null) {
-      LOGGER.w(line);
+//      To check label list
+//      LOGGER.w(line);
       d.labels.add(line);
     }
     br.close();

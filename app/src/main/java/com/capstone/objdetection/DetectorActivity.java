@@ -27,9 +27,9 @@ import java.util.List;
 
 
 public class DetectorActivity extends CameraActivity implements OnImageAvailableListener {
-//    TextView objTv;
-//    EnvironmentDetector env;
-//    Vibrator vib;
+    /*TextView objTv;
+    EnvironmentDetector env;
+    Vibrator vib;*/
 
 
     TextView envTv;
@@ -44,7 +44,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     // Minimum detection confidence to track a detection.
     private static final float MINIMUM_CONFIDENCE_TF_OD_API = 0.6f;
 
-    private static final Size DESIRED_PREVIEW_SIZE = new Size(640, 480);
+    private static final Size DESIRED_PREVIEW_SIZE = new Size(2340, 1080);
 
     private static final float TEXT_SIZE_DIP = 10;
 

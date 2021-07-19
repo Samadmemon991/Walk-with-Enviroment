@@ -2,6 +2,7 @@ package com.capstone.objdetection;
 
 import android.Manifest;
 import android.app.Activity;
+import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,6 +22,7 @@ import android.os.Trace;
 import android.os.Vibrator;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Size;
 import android.view.MotionEvent;
@@ -87,10 +89,10 @@ public abstract class CameraActivity extends Activity
         }
 
         envTv = (TextView) findViewById(R.id.Env);
-//        TextView objTv = (TextView) findViewById(R.id.ObjectsText);
         Vibrator vib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
         env = new EnvironmentDetector(vib);
         toEnd = new Intent(this, end.class);
+        toEnd.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         map = new HashMap<String, String>();
         this.textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
             @Override
@@ -109,7 +111,7 @@ public abstract class CameraActivity extends Activity
             public void onInit(int status) {
                 if (status == TextToSpeech.SUCCESS) {
                     tts.setLanguage(Locale.US);
-                    Log.d("TTS_test", "Success: ");
+                    LOGGER.d("TTS status: Success");
                 }
             }
         });
@@ -118,17 +120,16 @@ public abstract class CameraActivity extends Activity
         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             @Override
             public void onStart(String s) {
-                Log.d("Main Activity TTS_test", "Start");
+                    LOGGER.d("Env TTS Start");
+
             }
 
             @Override
             public void onDone(String s) {
                 tts.stop();
                 tts.shutdown();
-//                tts = null;
-                Log.d("TTS_test", "Done " + (tts == null));
                 startActivity(toEnd);
-                Log.d("TTS_test", "Done " + (tts == null));
+                finish();
             }
 
             @Override
@@ -492,19 +493,16 @@ public abstract class CameraActivity extends Activity
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         try {
-        if (textToSpeech != null && envTv.getText().equals("Pending")){
-            textToSpeech.stop();
-            textToSpeech.shutdown();
-            envS = env.envSet(envTv);
-            int res = tts.speak("You are in a " + envS, TextToSpeech.QUEUE_FLUSH, map);
-            Log.d("TTS_test", "result = TTS Envv " + res);
+            if (textToSpeech != null && envTv.getText().equals("Pending")) {
+               int textToSpeechRes = textToSpeech.stop();
+                LOGGER.d("result = textToSpeech stop " + textToSpeechRes);
+                textToSpeech.shutdown();
+                envS = env.envSet(envTv);
+                int res = tts.speak("You are in a " + envS, TextToSpeech.QUEUE_FLUSH, map);
+                LOGGER.d("result = TTS Env " + res);
 
-        }
-        }catch (Exception e){
-            Log.d("tts", "onTouchEvent: ");
-
-        }
-//        textToSpeech = null;
+            }
+        } catch (Exception e) {}
         return super.onTouchEvent(event);
     }
 }

@@ -7,9 +7,10 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ProgressBar;
+
+import com.capstone.objdetection.env.Logger;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -19,7 +20,8 @@ public class end extends AppCompatActivity {
     TextToSpeech tts;
     HashMap<String, String> mapE = new HashMap<String, String>();
     CountDownTimer cdt;
-    Intent intent;
+    Intent toDetector;
+    private static final Logger LOGGER = new Logger();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +29,8 @@ public class end extends AppCompatActivity {
         setContentView(R.layout.activity_end);
         getSupportActionBar().hide();
 
-        intent = new Intent(this, DetectorActivity.class);
+        toDetector = new Intent(this, DetectorActivity.class);
+        toDetector.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         mapE.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueIDE");
         pg = findViewById(R.id.progBar);
         tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
@@ -36,9 +39,9 @@ public class end extends AppCompatActivity {
                 if (status == TextToSpeech.SUCCESS) {
                     tts.setLanguage(Locale.US);
                     tts.setSpeechRate(0.9f);
-                    Log.d("End Class TTS_test", "Success: tts set ");
+                    LOGGER.d("tts Status: Success");
                     int res = tts.speak("To Re-scan the Environment\n touch anywhere on screen in 5 seconds", TextToSpeech.QUEUE_FLUSH, mapE);
-                    Log.d("End ClassTTS_test", "result = TTS E " + res);
+                    LOGGER.d("result TTS = " + res);
                 }
             }
         });
@@ -46,17 +49,17 @@ public class end extends AppCompatActivity {
         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             @Override
             public void onStart(String s) {
-                Log.d("End ClassTTS_test", "Started tts");
+                LOGGER.d("Started tts");
             }
 
             @Override
             public void onDone(String s) {
+                LOGGER.d("tts onDone: timerStarted");
                 runOnUiThread(new Runnable() {
                     public void run() {
                         startTimer();
                     }
                 });
-                Log.d("End ClassTTS_test", "Done E timer on");
             }
 
             @Override
@@ -67,45 +70,46 @@ public class end extends AppCompatActivity {
     }
 
     void startTimer() {
-        Log.d("End Class clock", "startTimer: ");
+        LOGGER.d("StartTimer: ");
         cdt = new CountDownTimer(5 * 1000, 50) {
             @Override
             public void onTick(long l) {
 
                 int x = (int) l * 2 / 100;
-                Log.d("End Class clock", "onTick: " + x);
+//                LOGGER.d("onTick: " + x);
                 pg.setProgress(x);
             }
 
             @Override
             public void onFinish() {
-                Log.d("End Class clock", "onFinish: kill app");
+                LOGGER.d("onFinish: killing app");
                 Process.killProcess(Process.myPid());
             }
         };
-        Log.d("End Class clock", "start: ");
         cdt.start();
+        LOGGER.d("CDT started");
 
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Log.d("end class", "onTouchEvent: ");
+        LOGGER.d("onTouchEvent: ");
         cdt.cancel();
-        Log.d("end class", "cdt cancel ");
-        startActivity(intent);
+        LOGGER.d("cdt cancel ");
+        startActivity(toDetector);
         finish();
-        Log.d("end class", "Activity finish");
+        LOGGER.d("Activity finish");
         return super.onTouchEvent(event);
     }
 
     @Override
     protected void onDestroy() {
+        int ttsStopRes = 1;
         if (tts != null) {
-            tts.stop();
+            ttsStopRes = tts.stop();
             tts.shutdown();
         }
-        Log.d("End class", "onDestroy: activity dead ");
+        LOGGER.d("onDestroy: ttsStopRes = " + ttsStopRes);
         super.onDestroy();
     }
 }

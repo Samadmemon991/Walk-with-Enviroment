@@ -5,25 +5,24 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
+    android:background="@android:color/transparent"
     tools:context="com.capstone.objdetection.CameraActivity">
 
 
-<!--    <include-->
-<!--        android:layout_gravity="bottom"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="223dp"-->
-<!--        layout="@layout/data_card"-->
-<!--        />-->
+    <!--    android:background="#fff"-->
+    <!--<include
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="223dp"
+        layout="@layout/data_card"
+        />-->
 
     <include
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="-20dp"
+        layout="@layout/data_card"
         android:layout_width="match_parent"
         android:layout_height="270dp"
-        layout="@layout/data_card"
-        />
-
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="-20dp" />
 
 
 </FrameLayout>
