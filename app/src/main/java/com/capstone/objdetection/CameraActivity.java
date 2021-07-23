@@ -128,8 +128,8 @@ public abstract class CameraActivity extends Activity
             public void onDone(String s) {
                 tts.stop();
                 tts.shutdown();
-                startActivity(toEnd);
                 finish();
+                startActivity(toEnd);
             }
 
             @Override
