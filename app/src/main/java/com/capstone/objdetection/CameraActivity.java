@@ -105,22 +105,27 @@ public abstract class CameraActivity extends Activity
             }
         });
 
-
         tts = new TextToSpeech(CameraActivity.this, new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
-                if (status == TextToSpeech.SUCCESS) {
-                    tts.setLanguage(Locale.US);
-                    LOGGER.d("TTS status: Success");
-                }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (status == TextToSpeech.SUCCESS) {
+                            tts.setLanguage(Locale.US);
+                            LOGGER.d("TTS status: Success");
+                        }
+                    }
+                });
             }
         });
+
 
         map.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "UniqueID");
         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             @Override
             public void onStart(String s) {
-                    LOGGER.d("Env TTS Start");
+                LOGGER.d("Env TTS Start");
 
             }
 
@@ -128,8 +133,9 @@ public abstract class CameraActivity extends Activity
             public void onDone(String s) {
                 tts.stop();
                 tts.shutdown();
-                finish();
+                CameraActivity.this.finish();
                 startActivity(toEnd);
+                LOGGER.d("TTS Env onDone");
             }
 
             @Override
@@ -235,11 +241,6 @@ public abstract class CameraActivity extends Activity
     public synchronized void onPause() {
         LOGGER.d("onPause " + this);
 
-        if (!isFinishing()) {
-            LOGGER.d("Requesting finish");
-            finish();
-        }
-
         handlerThread.quitSafely();
         try {
             handlerThread.join();
@@ -258,6 +259,10 @@ public abstract class CameraActivity extends Activity
             tts.shutdown();
         }
 
+        if (isFinishing()) {
+            LOGGER.d("Requesting finish");
+            finish();
+        }
         super.onPause();
     }
 
@@ -494,7 +499,7 @@ public abstract class CameraActivity extends Activity
     public boolean onTouchEvent(MotionEvent event) {
         try {
             if (textToSpeech != null && envTv.getText().equals("Pending")) {
-               int textToSpeechRes = textToSpeech.stop();
+                int textToSpeechRes = textToSpeech.stop();
                 LOGGER.d("result = textToSpeech stop " + textToSpeechRes);
                 textToSpeech.shutdown();
                 envS = env.envSet(envTv);
@@ -502,7 +507,8 @@ public abstract class CameraActivity extends Activity
                 LOGGER.d("result = TTS Env " + res);
 
             }
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
         return super.onTouchEvent(event);
     }
 }

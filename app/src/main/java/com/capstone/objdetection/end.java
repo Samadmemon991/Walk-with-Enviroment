@@ -7,6 +7,7 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ProgressBar;
 
@@ -60,11 +61,22 @@ public class end extends AppCompatActivity {
                         startTimer();
                     }
                 });
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        int ttsStopRes = 1;
+                        if (tts != null) {
+                            ttsStopRes = tts.stop();
+                            tts.shutdown();
+                        }
+                        LOGGER.d("In BG thread: ttsStopRes = " + ttsStopRes);
+                    }
+                }).start();
+
             }
 
             @Override
-            public void onError(String s) {
-            }
+            public void onError(String s) {}
         });
 
     }
@@ -83,7 +95,7 @@ public class end extends AppCompatActivity {
             @Override
             public void onFinish() {
                 LOGGER.d("onFinish: killing app");
-                Process.killProcess(Process.myPid());
+                System.exit(0);
             }
         };
         cdt.start();
@@ -94,7 +106,8 @@ public class end extends AppCompatActivity {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         LOGGER.d("onTouchEvent: ");
-        cdt.cancel();
+        if (cdt != null)
+            cdt.cancel();
         LOGGER.d("cdt cancel ");
         startActivity(toDetector);
         finish();
@@ -102,14 +115,4 @@ public class end extends AppCompatActivity {
         return super.onTouchEvent(event);
     }
 
-    @Override
-    protected void onDestroy() {
-        int ttsStopRes = 1;
-        if (tts != null) {
-            ttsStopRes = tts.stop();
-            tts.shutdown();
-        }
-        LOGGER.d("onDestroy: ttsStopRes = " + ttsStopRes);
-        super.onDestroy();
-    }
 }
