@@ -115,40 +115,48 @@ public class EnvironmentDetector {
 
             case "fork":
                 envTable.merge("Kitchen", 1, Integer::sum);
+                envTable.merge("Kitchen", 1, Integer::sum);
                 envTable.merge("Room", 1, Integer::sum);
                 break;
 
             case "knife":
+                envTable.merge("Kitchen", 1, Integer::sum);
                 envTable.merge("Kitchen", 1, Integer::sum);
                 envTable.merge("Room", 1, Integer::sum);
                 break;
 
             case "spoon":
                 envTable.merge("Kitchen", 1, Integer::sum);
+                envTable.merge("Kitchen", 1, Integer::sum);
                 envTable.merge("Room", 1, Integer::sum);
                 break;
 
             case "bowl":
+                envTable.merge("Kitchen", 1, Integer::sum);
                 envTable.merge("Kitchen", 1, Integer::sum);
 //                envTable.merge("Room", 1, Integer::sum);
                 break;
 
             case "banana":
                 envTable.merge("Kitchen", 1, Integer::sum);
+                envTable.merge("Kitchen", 1, Integer::sum);
                 envTable.merge("Room", 1, Integer::sum);
                 break;
 
             case "apple":
+                envTable.merge("Kitchen", 1, Integer::sum);
                 envTable.merge("Kitchen", 1, Integer::sum);
                 envTable.merge("Room", 1, Integer::sum);
                 break;
 
             case "sandwich":
                 envTable.merge("Kitchen", 1, Integer::sum);
+                envTable.merge("Kitchen", 1, Integer::sum);
                 envTable.merge("Room", 1, Integer::sum);
                 break;
 
             case "orange":
+                envTable.merge("Kitchen", 1, Integer::sum);
                 envTable.merge("Kitchen", 1, Integer::sum);
                 envTable.merge("Room", 1, Integer::sum);
                 break;
@@ -163,20 +171,24 @@ public class EnvironmentDetector {
 
             case "hot dog":
                 envTable.merge("Kitchen", 1, Integer::sum);
+                envTable.merge("Kitchen", 1, Integer::sum);
                 envTable.merge("Room", 1, Integer::sum);
                 break;
 
             case "pizza":
+                envTable.merge("Kitchen", 1, Integer::sum);
                 envTable.merge("Kitchen", 1, Integer::sum);
                 envTable.merge("Room", 1, Integer::sum);
                 break;
 
             case "donut":
                 envTable.merge("Kitchen", 1, Integer::sum);
+                envTable.merge("Kitchen", 1, Integer::sum);
                 envTable.merge("Room", 1, Integer::sum);
                 break;
 
             case "cake":
+                envTable.merge("Kitchen", 1, Integer::sum);
                 envTable.merge("Kitchen", 1, Integer::sum);
                 envTable.merge("Room", 1, Integer::sum);
                 break;
