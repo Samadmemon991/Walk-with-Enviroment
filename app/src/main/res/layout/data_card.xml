@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="240dp"
     android:layout_gravity="bottom"
-    card_view:cardBackgroundColor="@android:color/transparent">
+    card_view:cardBackgroundColor="@android:color/transparent"
+    android:visibility="invisible">
 <!--    card_view:cardCornerRadius="10dp">-->
 
 
